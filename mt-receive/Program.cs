@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using MassTransit;
 using messages;
 
@@ -6,6 +7,8 @@ public class Program
 {
     public static void Main()
     {
+        Thread.Sleep(10000);
+
         var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
         {
             var host = sbc.Host(new Uri("rabbitmq://rabbit:5673"), h =>
