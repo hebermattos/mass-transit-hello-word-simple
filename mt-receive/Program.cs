@@ -10,8 +10,8 @@ public class Program
         {
             var host = sbc.Host(new Uri("rabbitmq://rabbit"), h =>
             {
-                h.Username("bill");
-                h.Password("123qwe!@#QWE");
+                h.Username("guest");
+                h.Password("guest");
             });
 
             sbc.ReceiveEndpoint(host, "test_queue", ep =>
