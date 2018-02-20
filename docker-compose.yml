@@ -4,6 +4,10 @@ services:
     build: mt-receive/ .
     depends_on:
       - rabbit
+  sender:
+    build: mt-send/ .
+    depends_on:
+      - rabbit
   rabbit:
     image: "rabbitmq:3-management"
     ports:

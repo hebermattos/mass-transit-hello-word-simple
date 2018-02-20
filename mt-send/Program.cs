@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using MassTransit;
 using messages;
 
@@ -8,16 +9,21 @@ public class Program
     {
         var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
         {
-            var host = sbc.Host(new Uri("rabbitmq://localhost"), h =>
+            var host = sbc.Host(new Uri("rabbitmq://rabbit"), h =>
             {
-                h.Username("bill");
-                h.Password("123qwe!@#QWE");
+                h.Username("guest");
+                h.Password("guest");
             });
         });
 
         bus.Start();
 
-        bus.Publish(new YourMessage{Text = "Hi"});
+        for (int i = 0; i < Int16.MaxValue; i++)
+        {
+            bus.Publish(new YourMessage { Text = $"Hi number {i}" });
+
+            Thread.Sleep(1000);
+        }
 
         Console.WriteLine("Press any key to exit");
         Console.ReadKey();
