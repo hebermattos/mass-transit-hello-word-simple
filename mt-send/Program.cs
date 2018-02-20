@@ -9,10 +9,10 @@ public class Program
     {
         var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
         {
-            var host = sbc.Host(new Uri("rabbitmq://rabbit"), h =>
+            var host = sbc.Host(new Uri("rabbitmq://rabbit:5673"), h =>
             {
                 h.Username("guest");
-                h.Password("guest");
+                h.Password("guest");             
             });
         });
 
