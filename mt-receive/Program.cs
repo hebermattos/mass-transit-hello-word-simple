@@ -8,7 +8,7 @@ public class Program
     {
         var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
         {
-            var host = sbc.Host(new Uri("rabbitmq://localhost"), h =>
+            var host = sbc.Host(new Uri("rabbitmq://rabbit"), h =>
             {
                 h.Username("bill");
                 h.Password("123qwe!@#QWE");
@@ -29,5 +29,6 @@ public class Program
         Console.ReadKey();
 
         bus.Stop();
+        Console.WriteLine("Bus stopped");
     }
 }
