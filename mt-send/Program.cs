@@ -15,7 +15,7 @@ public class Program
         {
             try
             {
-                _bus = ConnectQueue();
+                ConnectQueue();
                 connected = true;
                 Console.WriteLine("Connected!");
             }
@@ -36,7 +36,7 @@ public class Program
         }
     }
 
-    private static IBusControl ConnectQueue()
+    private static void ConnectQueue()
     {
         var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
         {
@@ -48,7 +48,5 @@ public class Program
         });
 
         bus.Start();
-
-        return bus;
     }
 }
