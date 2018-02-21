@@ -27,7 +27,7 @@ public class Program
 
         while (true)
         {
-            var data = new Random().Next(1000);
+            var data = "message_" + new Random().Next(1000);
 
             _bus.Publish(new YourMessage { Text = data.ToString() });
             Console.WriteLine($"enviando: {data}");
