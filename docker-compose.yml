@@ -6,14 +6,14 @@ services:
     build: mt-receive/ .
     depends_on:
       - sender
-      - fila
+      - rabbit
 
   sender:
     build: mt-send/ .
     depends_on:
-      - fila
+      - rabbit
 
-  fila:
+  rabbit:
     image: "rabbitmq:3-management"
     ports:
     - "15672:15672"

@@ -33,7 +33,7 @@ public class Program
     {
         var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
         {
-            var host = sbc.Host(new Uri("rabbitmq://fila"), h =>
+            var host = sbc.Host(new Uri("rabbitmq://rabbit"), h =>
             {
                 h.Username("guest");
                 h.Password("guest");
