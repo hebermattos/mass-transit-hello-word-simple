@@ -15,7 +15,6 @@ public class Program
         {
             try
             {
-
                 _bus = ConnectQueue();
                 connected = true;
                 Console.WriteLine("Connected!");
@@ -26,15 +25,15 @@ public class Program
             }
         }
 
-        for (int i = 0; i < 100; i++)
+        while (true)
         {
-            _bus.Publish(new YourMessage { Text = $"Hi number {i}" });
-            Console.WriteLine($"enviando: 'Hi number {i}'");
+            var data = new Random().Next(1000);
+
+            _bus.Publish(new YourMessage { Text = data.ToString() });
+            Console.WriteLine($"enviando: {data}");
 
             Thread.Sleep(1000);
         }
-
-        _bus.Stop();
     }
 
     private static IBusControl ConnectQueue()

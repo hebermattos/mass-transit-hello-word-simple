@@ -6,6 +6,7 @@ services:
     build: mt-receive/ .
     depends_on:
       - sender
+      - rabbit
 
   sender:
     build: mt-send/ .
