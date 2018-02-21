@@ -1,15 +1,19 @@
 version: '3'
+
 services:
+
   receiver:
     build: mt-receive/ .
     depends_on:
       - sender
+
   sender:
     build: mt-send/ .
     depends_on:
       - rabbit
+
   rabbit:
     image: "rabbitmq:3-management"
     ports:
-    - "15673:15672"
-    - "5673:5672"
+    - "15672:15672"
+    - "5672:5672"

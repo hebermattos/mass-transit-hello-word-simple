@@ -5,31 +5,50 @@ using messages;
 
 public class Program
 {
+    private static IBusControl _bus;
+
     public static void Main()
     {
-        Thread.Sleep(10000);
+        var connected = false;
 
-        var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
+        while (!connected)
         {
-            var host = sbc.Host(new Uri("rabbitmq://rabbit:5673"), h =>
+            try
             {
-                h.Username("guest");
-                h.Password("guest");             
-            });
-        });
 
-        bus.Start();
+                _bus = ConnectQueue();
+                connected = true;
+                Console.WriteLine("Connected!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro on connection: {ex.Message}");
+            }
+        }
 
-        for (int i = 0; i < Int16.MaxValue; i++)
+        for (int i = 0; i < 100; i++)
         {
-            bus.Publish(new YourMessage { Text = $"Hi number {i}" });
+            _bus.Publish(new YourMessage { Text = $"Hi number {i}" });
 
             Thread.Sleep(1000);
         }
 
-        Console.WriteLine("Press any key to exit");
-        Console.ReadKey();
+        _bus.Stop();
+    }
 
-        bus.Stop();
+    private static IBusControl ConnectQueue()
+    {
+        var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
+        {
+            var host = sbc.Host(new Uri("rabbitmq://rabbit"), h =>
+            {
+                h.Username("guest");
+                h.Password("guest");
+            });
+        });
+
+        bus.Start();
+        
+        return bus;
     }
 }
