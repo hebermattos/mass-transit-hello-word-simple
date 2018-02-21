@@ -29,6 +29,7 @@ public class Program
         for (int i = 0; i < 100; i++)
         {
             _bus.Publish(new YourMessage { Text = $"Hi number {i}" });
+            Console.WriteLine($"enviando: 'Hi number {i}'");
 
             Thread.Sleep(1000);
         }
@@ -48,7 +49,7 @@ public class Program
         });
 
         bus.Start();
-        
+
         return bus;
     }
 }
