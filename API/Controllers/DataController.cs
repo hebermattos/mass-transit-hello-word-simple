@@ -16,7 +16,7 @@ namespace net_core_api_docker.Controllers
         {
             using (var redis = await ConnectionMultiplexer.ConnectAsync("redis"))
             {
-                IDatabase db = redis.GetDatabase();
+                var db = redis.GetDatabase();
 
                 var value = await db.StringGetAsync(key);
 
