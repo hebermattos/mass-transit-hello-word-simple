@@ -23,3 +23,14 @@ services:
     build: "API/ ."
     ports:
     - "5000:80"
+  
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  
+  redisui:
+    image: marian/rebrow
+    ports:
+      - "5001:5001"
+  
