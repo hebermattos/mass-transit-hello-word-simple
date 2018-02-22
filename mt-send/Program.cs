@@ -25,11 +25,13 @@ public class Program
             }
         }
 
+        var key = 1;
+
         while (true)
         {
-            var data = "message_" + new Random().Next(1000);
+            var data = "message_" + key;
 
-            _bus.Publish(new YourMessage { Text = data.ToString() });
+            _bus.Publish(new Message { Key = key.ToString(), Value = data });
             Console.WriteLine($"enviando: {data}");
 
             Thread.Sleep(1000);
