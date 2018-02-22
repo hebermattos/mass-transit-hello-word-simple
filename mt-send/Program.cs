@@ -34,6 +34,8 @@ public class Program
             _bus.Publish(new Message { Key = key.ToString(), Value = data });
             Console.WriteLine($"enviando: {data}");
 
+            key++;
+
             Thread.Sleep(1000);
         }
     }
