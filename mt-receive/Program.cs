@@ -2,6 +2,7 @@
 using System.Threading;
 using MassTransit;
 using messages;
+using StackExchange.Redis;
 
 public class Program
 {
@@ -41,9 +42,24 @@ public class Program
 
             sbc.ReceiveEndpoint(host, "message_queue", ep =>
             {
-                ep.Handler<YourMessage>(context =>
+                ep.Handler<Message>(context =>
                 {
-                    return Console.Out.WriteLineAsync($"Received: {context.Message.Text}");
+                    try
+                    {
+                        using (var redis = ConnectionMultiplexer.Connect("redis"))
+                        {
+                            IDatabase db = redis.GetDatabase();
+
+                            if (!db.StringSet(context.Message.Key, context.Message.Value))
+                                throw new Exception("Message not saved on redis :(");
+                        }
+
+                        return Console.Out.WriteLineAsync("Message processed");
+                    }
+                    catch (Exception ex)
+                    {
+                        return Console.Out.WriteLineAsync($"Erro on message processing: {ex.Message}");
+                    }
                 });
             });
         });
