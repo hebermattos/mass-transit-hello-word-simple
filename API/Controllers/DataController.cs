@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 
-namespace net_core_api_docker.Controllers
+namespace Controllers
 {
     [Route("api/[controller]")]
     public class DataController : Controller

@@ -10,4 +10,4 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-ENTRYPOINT ["dotnet", "out/mt-receive.dll"]
+ENTRYPOINT ["dotnet", "out/Sender.dll"]

@@ -3,12 +3,12 @@ version: '3'
 services:
 
   receiver:
-    build: mt-receive/ .
+    build: Receiver/ .
     depends_on:
       - queue
 
   sender:
-    build: mt-send/ .
+    build: Sender/ .
     depends_on:
       - queue
 
