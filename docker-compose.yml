@@ -5,7 +5,6 @@ services:
   receiver:
     build: mt-receive/ .
     depends_on:
-      - sender
       - queue
 
   sender:
@@ -22,7 +21,7 @@ services:
   api:
     build: "API/ ."
     depends_on:
-      - db
+      - redis
     ports:
     - "5000:80"
   
@@ -34,7 +33,7 @@ services:
   redis-ui:
     image: marian/rebrow
     depends_on:
-      - db
+      - redis
     ports:
       - "5001:5001"
   
