@@ -21,16 +21,20 @@ services:
 
   api:
     build: "API/ ."
+    depends_on:
+      - db
     ports:
     - "5000:80"
   
-  redis:
+  db:
     image: redis
     ports:
       - "6379:6379"
   
-  redisui:
+  db-ui:
     image: marian/rebrow
+    depends_on:
+      - db
     ports:
       - "5001:5001"
   
