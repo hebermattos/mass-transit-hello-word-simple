@@ -2,6 +2,7 @@
 using System.Threading;
 using MassTransit;
 using messages;
+using Newtonsoft.Json;
 
 public class Program
 {
@@ -29,14 +30,15 @@ public class Program
 
         while (true)
         {
-            var data = "message_" + key;
+            var newMessge = new Message { Key = key.ToString(), Value = "message_" + key };
 
-            _bus.Publish(new Message { Key = key.ToString(), Value = data });
-            Console.WriteLine($"enviando: {data}");
+            _bus.Publish(newMessge);
+            
+            Console.WriteLine($"enviando: { JsonConvert.SerializeObject(newMessge) }");
 
             key++;
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
         }
     }
 
