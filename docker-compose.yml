@@ -6,6 +6,7 @@ services:
     build: Receiver/ .
     depends_on:
       - queue
+      - sender
 
   sender:
     build: Sender/ .
