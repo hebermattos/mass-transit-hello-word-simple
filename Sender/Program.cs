@@ -30,10 +30,13 @@ public class Program
 
         while (true)
         {
-            var newMessge = new Message { Key = key.ToString(), Value = "message_" + key };
+            var newMessge = new Message { 
+                Key = key.ToString(), 
+                Value = "message_" + key 
+            };
 
             _bus.Publish(newMessge);
-            
+
             Console.WriteLine($"enviando: { JsonConvert.SerializeObject(newMessge) }");
 
             key++;
