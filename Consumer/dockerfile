@@ -10,4 +10,4 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-ENTRYPOINT ["dotnet", "out/Receiver.dll"]
+ENTRYPOINT ["dotnet", "out/Consumer.dll"]
