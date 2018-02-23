@@ -2,8 +2,8 @@ version: '3'
 
 services:
 
-  receiver:
-    build: Receiver/ .
+  consumer:
+    build: Consumer/ .
     depends_on:
       - queue
       - sender
