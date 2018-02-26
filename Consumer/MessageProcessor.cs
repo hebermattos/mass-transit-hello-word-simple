@@ -14,7 +14,7 @@ namespace messages
             {
                 using (var redis = ConnectionMultiplexer.Connect("redis"))
                 {
-                    IDatabase db = redis.GetDatabase();
+                    var db = redis.GetDatabase();
 
                     if (!db.StringSet(context.Message.Key, context.Message.Value))
                         throw new Exception("Message not saved on redis :(");

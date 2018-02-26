@@ -8,8 +8,8 @@ services:
       - queue
       - sender
 
-  sender:
-    build: Sender/ .
+  producer:
+    build: Producer/ .
     depends_on:
       - queue
 

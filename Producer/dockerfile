@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0
+FROM microsoft/dotnet:runtime
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -10,4 +10,4 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-ENTRYPOINT ["dotnet", "out/Sender.dll"]
+ENTRYPOINT ["dotnet", "out/Producer.dll"]
