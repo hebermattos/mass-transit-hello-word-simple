@@ -6,7 +6,6 @@ services:
     build: Consumer/ .
     depends_on:
       - queue
-      - sender
 
   producer:
     build: Producer/ .
