@@ -4,8 +4,6 @@ using messages;
 using MassTransit;
 using StackExchange.Redis;
 
-
-
 public class Program
 {
     private static ManualResetEvent _handler = new ManualResetEvent(false);
