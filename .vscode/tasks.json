@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/mt-receive/mt-receive.csproj"
+                "${workspaceFolder}/API/api.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

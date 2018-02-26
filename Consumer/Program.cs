@@ -4,6 +4,8 @@ using messages;
 using MassTransit;
 using StackExchange.Redis;
 
+
+
 public class Program
 {
     private static ManualResetEvent _handler = new ManualResetEvent(false);
@@ -42,25 +44,7 @@ public class Program
 
             sbc.ReceiveEndpoint(host, "message_queue", ep =>
             {
-                ep.Handler<Message>(context =>
-                {
-                    try
-                    {
-                        using (var redis = ConnectionMultiplexer.Connect("redis"))
-                        {
-                            IDatabase db = redis.GetDatabase();
-
-                            if (!db.StringSet(context.Message.Key, context.Message.Value))
-                                throw new Exception("Message not saved on redis :(");
-                        }
-
-                        return Console.Out.WriteLineAsync("Message processed");
-                    }
-                    catch (Exception ex)
-                    {
-                        return Console.Out.WriteLineAsync($"Erro on message processing: {ex.Message}");
-                    }
-                });
+                ep.Consumer<MessageProcessor>();
             });
         });
 
