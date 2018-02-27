@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using services;
 
-namespace net_core_api_docker
+namespace api
 {
     public class Startup
     {
@@ -28,24 +28,17 @@ namespace net_core_api_docker
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
-           {
-               c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-           });
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
 
-           services.AddScoped<IDataService, RedisService>();
+            services.AddScoped<IDataService, RedisService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");

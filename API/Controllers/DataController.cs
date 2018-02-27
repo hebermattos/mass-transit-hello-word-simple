@@ -18,7 +18,6 @@ namespace Controllers
             _dataService = dataService;
         }
 
-        // GET api/values
         [HttpGet("{key}")]
         public async Task<string> Get(string key)
         {
