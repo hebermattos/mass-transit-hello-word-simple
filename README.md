@@ -1,3 +1,3 @@
 # mass-transit-hello-word
 
-pub/sub example with dockerizes RabbitMQ and Masstransit
+pub/sub example with dockerized RabbitMQ, Masstransit and .NET Core Web API
