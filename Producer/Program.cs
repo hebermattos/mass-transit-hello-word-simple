@@ -18,11 +18,11 @@ public class Program
             {
                 _bus = ConnectQueue();
                 connected = true;
-                Console.WriteLine("Connected!");
+                Console.WriteLine("Producer connected!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro on connection: {ex.Message}");
+                Console.WriteLine($"Erro on producer connection: {ex.Message}");
             }
         }
 
@@ -30,9 +30,10 @@ public class Program
 
         while (true)
         {
-            var newMessge = new Message { 
-                Key = key.ToString(), 
-                Value = "message_" + key 
+            var newMessge = new Message
+            {
+                Key = key.ToString(),
+                Value = "message_" + key
             };
 
             _bus.Publish(newMessge);

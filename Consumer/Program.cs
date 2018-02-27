@@ -18,11 +18,11 @@ public class Program
             {
                 ConnectQueue();
                 connected = true;
-                Console.WriteLine("Connected!");
+                Console.WriteLine("Consumer connected!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro on connection: {ex.Message}");
+                Console.WriteLine($"Erro on consumer connection: {ex.Message}");
             }
         }
 
