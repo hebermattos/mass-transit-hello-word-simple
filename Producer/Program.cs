@@ -4,61 +4,65 @@ using MassTransit;
 using messages;
 using Newtonsoft.Json;
 
-public class Program
+namespace producer
 {
-    private static IBusControl _bus;
 
-    public static void Main()
+    public class Program
     {
-        var connected = false;
+        private static IBusControl _bus;
 
-        while (!connected)
+        public static void Main()
         {
-            try
+            var connected = false;
+
+            while (!connected)
             {
-                _bus = ConnectQueue();
-                connected = true;
-                Console.WriteLine("Producer connected!");
+                try
+                {
+                    _bus = ConnectQueue();
+                    connected = true;
+                    Console.WriteLine("Producer connected!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro on producer connection: {ex.Message}");
+                }
             }
-            catch (Exception ex)
+
+            var key = 1;
+
+            while (true)
             {
-                Console.WriteLine($"Erro on producer connection: {ex.Message}");
+                var newMessge = new Message
+                {
+                    Key = key.ToString(),
+                    Value = "message_" + key
+                };
+
+                _bus.Publish(newMessge);
+
+                Console.WriteLine($"enviando: { JsonConvert.SerializeObject(newMessge) }");
+
+                key++;
+
+                Thread.Sleep(5000);
             }
         }
 
-        var key = 1;
-
-        while (true)
+        private static IBusControl ConnectQueue()
         {
-            var newMessge = new Message
+            var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
             {
-                Key = key.ToString(),
-                Value = "message_" + key
-            };
-
-            _bus.Publish(newMessge);
-
-            Console.WriteLine($"enviando: { JsonConvert.SerializeObject(newMessge) }");
-
-            key++;
-
-            Thread.Sleep(5000);
-        }
-    }
-
-    private static IBusControl ConnectQueue()
-    {
-        var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
-        {
-            var host = sbc.Host(new Uri("rabbitmq://queue"), h =>
-            {
-                h.Username("guest");
-                h.Password("guest");
+                var host = sbc.Host(new Uri("rabbitmq://queue"), h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
             });
-        });
 
-        bus.Start();
+            bus.Start();
 
-        return bus;
+            return bus;
+        }
     }
 }

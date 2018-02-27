@@ -4,48 +4,51 @@ using messages;
 using MassTransit;
 using StackExchange.Redis;
 
-public class Program
+namespace consumer
 {
-    private static ManualResetEvent _handler = new ManualResetEvent(false);
-
-    public static void Main()
+    public class Program
     {
-        var connected = false;
+        private static ManualResetEvent _handler = new ManualResetEvent(false);
 
-        while (!connected)
+        public static void Main()
         {
-            try
+            var connected = false;
+
+            while (!connected)
             {
-                ConnectQueue();
-                connected = true;
-                Console.WriteLine("Consumer connected!");
+                try
+                {
+                    ConnectQueue();
+                    connected = true;
+                    Console.WriteLine("Consumer connected!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro on consumer connection: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro on consumer connection: {ex.Message}");
-            }
+
+            _handler.WaitOne();
+
         }
 
-        _handler.WaitOne();
-
-    }
-
-    private static void ConnectQueue()
-    {
-        var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
+        private static void ConnectQueue()
         {
-            var host = sbc.Host(new Uri("rabbitmq://queue"), h =>
+            var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
             {
-                h.Username("guest");
-                h.Password("guest");
+                var host = sbc.Host(new Uri("rabbitmq://queue"), h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+
+                sbc.ReceiveEndpoint(host, "message_queue", ep =>
+                {
+                    ep.Consumer<MessageProcessor>();
+                });
             });
 
-            sbc.ReceiveEndpoint(host, "message_queue", ep =>
-            {
-                ep.Consumer<MessageProcessor>();
-            });
-        });
-
-        bus.Start();
+            bus.Start();
+        }
     }
 }
