@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 namespace producer
 {
-
     public class Program
     {
         private static IBusControl _bus;
@@ -41,7 +40,7 @@ namespace producer
 
                 _bus.Publish(newMessge);
 
-                Console.WriteLine($"enviando: { JsonConvert.SerializeObject(newMessge) }");
+                Console.WriteLine($"sending: { JsonConvert.SerializeObject(newMessge) }");
 
                 key++;
 

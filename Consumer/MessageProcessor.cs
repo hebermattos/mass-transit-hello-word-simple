@@ -17,10 +17,10 @@ namespace messages
                     var db = redis.GetDatabase();
 
                     if (!db.StringSet(context.Message.Key, context.Message.Value))
-                        throw new Exception("Message not saved on redis :(");
+                        throw new Exception("Message not saved on redis!");
                 }
 
-                return Console.Out.WriteLineAsync("Message processed");
+                return Console.Out.WriteLineAsync("Message processed!");
             }
             catch (Exception ex)
             {
