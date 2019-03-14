@@ -3,12 +3,12 @@ version: '3'
 services:
 
   consumer:
-    build: Consumer/ .
+    build: Consumer/ 
     depends_on:
       - queue
 
   producer:
-    build: Producer/ .
+    build: Producer/
     depends_on:
       - queue
 
@@ -19,7 +19,7 @@ services:
     - "5672:5672"
 
   api:
-    build: "API/ ."
+    build: API/
     depends_on:
       - redis
     ports:
