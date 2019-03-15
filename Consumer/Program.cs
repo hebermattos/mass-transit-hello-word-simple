@@ -25,8 +25,6 @@ namespace consumer
                     h.Password("guest");
                 });
 
-                //sbc.UseInMemoryScheduler();
-
                 sbc.ReceiveEndpoint(host, "message_queue", ep =>
                 {
                     ep.UseCircuitBreaker(cb =>
