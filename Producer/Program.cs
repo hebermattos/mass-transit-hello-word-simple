@@ -12,47 +12,26 @@ namespace producer
 
         public static void Main()
         {
-            var connected = false;
+            _bus = ConnectQueue();
 
-            while (!connected)
+            Console.WriteLine("Producer connected!");
+
+            var newMessge = new Message
             {
-                try
-                {
-                    _bus = ConnectQueue();
-                    connected = true;
-                    Console.WriteLine("Producer connected!");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erro on producer connection: {ex.Message}");
-                }
-            }
+                Key = "key",
+                Value = "value"
+            };
 
-            var key = 1;
+            _bus.Publish(newMessge);
 
-            while (true)
-            {
-                var newMessge = new Message
-                {
-                    Key = key.ToString(),
-                    Value = "message_" + key
-                };
-
-                _bus.Publish(newMessge);
-
-                Console.WriteLine($"sending: { JsonConvert.SerializeObject(newMessge) }");
-
-                key++;
-
-                Thread.Sleep(5000);
-            }
+            Console.WriteLine($"sending: { JsonConvert.SerializeObject(newMessge) }");
         }
 
         private static IBusControl ConnectQueue()
         {
             var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
             {
-                var host = sbc.Host(new Uri("rabbitmq://queue"), h =>
+                var host = sbc.Host(new Uri("rabbitmq://localhost"), h =>
                 {
                     h.Username("guest");
                     h.Password("guest");

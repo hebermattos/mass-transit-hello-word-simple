@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using MassTransit;
 using messages;
-using StackExchange.Redis;
+using Newtonsoft.Json;
 
 namespace messages
 {
@@ -10,22 +10,11 @@ namespace messages
     {
         public Task Consume(ConsumeContext<Message> context)
         {
-            try
-            {
-                using (var redis = ConnectionMultiplexer.Connect("redis"))
-                {
-                    var db = redis.GetDatabase();
+            Console.WriteLine("receive at: " + DateTime.Now.ToLongTimeString());
 
-                    if (!db.StringSet(context.Message.Key, context.Message.Value))
-                        throw new Exception("Message not saved on redis!");
-                }
+            throw new Exception("foo");
 
-                return Console.Out.WriteLineAsync("Message processed!");
-            }
-            catch (Exception ex)
-            {
-                return Console.Out.WriteLineAsync($"Erro on message processing: {ex.Message}");
-            }
+            return Console.Out.WriteLineAsync($"receiving: { JsonConvert.SerializeObject(context.Message) }");
         }
     }
 }

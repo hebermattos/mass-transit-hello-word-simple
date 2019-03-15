@@ -2,7 +2,7 @@
 using System.Threading;
 using messages;
 using MassTransit;
-using StackExchange.Redis;
+using GreenPipes;
 
 namespace consumer
 {
@@ -12,31 +12,18 @@ namespace consumer
 
         public static void Main()
         {
-            var connected = false;
+            ConnectQueue();
 
-            while (!connected)
-            {
-                try
-                {
-                    ConnectQueue();
-                    connected = true;
-                    Console.WriteLine("Consumer connected!");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erro on consumer connection: {ex.Message}");
-                }
-            }
+            Console.WriteLine("Consumer connected!");
 
             _handler.WaitOne();
-
         }
 
         private static void ConnectQueue()
         {
             var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
             {
-                var host = sbc.Host(new Uri("rabbitmq://queue"), h =>
+                var host = sbc.Host(new Uri("rabbitmq://localhost"), h =>
                 {
                     h.Username("guest");
                     h.Password("guest");
@@ -44,6 +31,16 @@ namespace consumer
 
                 sbc.ReceiveEndpoint(host, "message_queue", ep =>
                 {
+                    ep.UseCircuitBreaker(cb =>
+                    {
+                        cb.TrackingPeriod = TimeSpan.FromMinutes(1);
+                        cb.TripThreshold = 15;
+                        cb.ActiveThreshold = 10;
+                        cb.ResetInterval = TimeSpan.FromMinutes(5);
+                    });
+                    ep.UseRetry(r => r.Incremental(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)));
+                    ep.UseRateLimit(10, TimeSpan.FromSeconds(1));
+
                     ep.Consumer<MessageProcessor>();
                 });
             });
