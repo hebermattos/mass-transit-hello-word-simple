@@ -8,11 +8,9 @@ namespace producer
 {
     public class Program
     {
-        private static IBusControl _bus;
-
         public static void Main()
         {
-            _bus = ConnectQueue();
+            var _bus = ConnectQueue();
 
             Console.WriteLine("Producer connected!");
 
