@@ -10,11 +10,12 @@ namespace messages
     {
         public Task Consume(ConsumeContext<Message> context)
         {
-            Console.WriteLine("receive at: " + DateTime.Now.ToLongTimeString());
+            Console.WriteLine("receive at (" + context.GetRetryAttempt() + "): " + DateTime.Now.ToLongTimeString());
 
             throw new Exception("foo");
 
-            return Console.Out.WriteLineAsync($"receiving: { JsonConvert.SerializeObject(context.Message) }");
+            //return Console.Out.WriteLineAsync($"receiving: { JsonConvert.SerializeObject(context.Message) }");
         }
+
     }
 }

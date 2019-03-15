@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Threading;
-using messages;
 using MassTransit;
 using GreenPipes;
+using messages;
 
 namespace consumer
 {
     public class Program
-    {
-        private static ManualResetEvent _handler = new ManualResetEvent(false);
-
+    {      
         public static void Main()
         {
             ConnectQueue();
 
             Console.WriteLine("Consumer connected!");
-
-            _handler.WaitOne();
         }
 
         private static void ConnectQueue()
@@ -28,6 +24,8 @@ namespace consumer
                     h.Username("guest");
                     h.Password("guest");
                 });
+
+                //sbc.UseInMemoryScheduler();
 
                 sbc.ReceiveEndpoint(host, "message_queue", ep =>
                 {
@@ -42,6 +40,7 @@ namespace consumer
                     ep.UseRateLimit(10, TimeSpan.FromSeconds(1));
 
                     ep.Consumer<MessageProcessor>();
+                    ep.Consumer<FaultMessageProcessor>();
                 });
             });
 
